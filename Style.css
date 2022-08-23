@@ -1,0 +1,150 @@
+body {
+  background-color: black;
+  color: white;
+  text-shadow: 10px 10px 5px;
+  font-family: 'Courier New';
+}
+
+#textfield {
+  border: 2px solid;
+  height: 90%;
+  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+}
+
+#TextMenu {
+  position: fixed;
+  bottom: 0px;
+  left: 60px;
+  border: white 1px solid;
+  width: 59%;
+  height: 100%;
+
+
+}
+
+#TextMenu>#text {
+  background-color: black;
+  width: 76%;
+  height: 8%;
+  color: white;
+
+}
+
+#textmodes {
+  background-color: black;
+  color: white;
+  height: 7%;
+  width: 12%;
+}
+
+#textmodes>option {
+  background-color: black;
+  color: white;
+  border: 1px solid white;
+  width: 100px;
+  height: 50px;
+}
+
+#textmodes>input:active,
+#Enter:active {
+  background-color: white;
+  color: black;
+}
+
+#Enter {
+  position: fixed;
+  background-color: black;
+  color: white;
+  border: white 1px solid;
+  height: 9%;
+  width: 5%;
+  margin: 0px 5px;
+}
+
+.textsample {
+  margin: auto auto;
+  text-align: center;
+  padding: 10px;
+  border: 1px white dotted;
+  width: 50%;
+  display: flex;
+  justify-content: space-between;
+}
+
+#sidebar {
+  border: 2px white solid;
+  width: 25%;
+  height: 80%;
+  position: fixed;
+  left: 70%;
+
+}
+
+#sidebar>a {
+  margin: auto auto;
+  text-align: center;
+  padding: 10px;
+  border: 1px white dotted;
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  text-decoration: none;
+  color: white;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.Hero,
+.Line,
+.description,
+.chapter,
+.redacting {
+  margin: auto auto;
+  text-align: center;
+  padding: 0px 10px;
+  border: 1px white dotted;
+  width: 50%;
+  text-align: center;
+
+}
+
+.Hero {
+  color: white;
+  font-weight: 400;
+  font-size: 17px;
+
+}
+
+.Line {
+  color: white;
+  font-weight: 100;
+  font-size: 14px;
+}
+
+.description {
+  color: white;
+  font-weight: 200;
+  font-size: 12px;
+}
+
+.chapter {
+  color: white;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.redacting {
+  color: yellow;
+}
+
+::-webkit-scrollbar {
+  background: black;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, lightgray, black);
+  border-radius: 20px;
+}
