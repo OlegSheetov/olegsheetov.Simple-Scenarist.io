@@ -3,6 +3,7 @@ body {
   color: white;
   text-shadow: 10px 10px 5px;
   font-family: 'Courier New';
+  
 }
 
 #textfield {
@@ -96,7 +97,18 @@ body {
   font-weight: 700;
   font-size: 20px;
 }
-
+#contextmenu {
+  position: absolute;
+  z-index:1;
+  display:none;
+  height: 100px;
+  width: 150px;
+  border: 1px white solid;
+  background-color: black;
+}
+#contextmenu > p {
+  text-align: center;
+}
 .Hero,
 .Line,
 .description,

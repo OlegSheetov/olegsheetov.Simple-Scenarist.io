@@ -2,6 +2,7 @@ const Enter = document.getElementById('Enter');
 const textfield = document.getElementById('textfield')
 const textmodes = document.getElementById("textmodes")
 const sidebar = document.getElementById('sidebar')
+const contextmenu = document.getElementById('contextmenu')
 let text = document.getElementById('text'), clicked_classname
 
 
@@ -19,24 +20,18 @@ function wrtext() {
   else if (writedtext_styleclass == "Line") {
     textmodes.selectedIndex = 0
   }
-
-  
-  // Добавляет в Сайдбар ссылку на главу и по нажатию этой ссылки прокручивает textfield до главы....... По крайней мере так должно быть , но не работает. 
-
-  // else if (writedtext_styleclass == "chapter") {
-  //   writedtext_Id = text.value
-  //   sidebar.insertAdjacentHTML('BeforeEnd',
-  //     '<a href=#' + writedtext_name + '>' + writedtext_name + '</a>');
-  //   textmodes.selectedIndex = 2
-  // }
 }
 
-
+function writeAndSafe() {
+  wrtext()
+  safeprogress()
+}
 // Функция которая отправляет текст 
 function Send_Enter_Button(event) {
   if (event.which == 13) {
     wrtext()
     textfield.lastChild.scrollIntoView()
+    safeprogress()
   }
   else if (event.altKey == true && event.which == 8) {
     textfield.lastChild.remove()
@@ -51,10 +46,6 @@ function Send_Enter_Button(event) {
 function Delete_button(event) {
   if (event.altKey == true && event.which == 8) {
     textfield.lastChild.remove()
-    if (textfield.lastChild.className == 'chapter') {
-      textfield.lastChild.remove()
-      sidebar.lastChild.remove()
-    }
   }
 }
 // Простая функция по переключению режимов ввода текста при зажатой клавише альт и 1-4
@@ -95,7 +86,6 @@ function redacting_marked_text(event) {
     for (let index = 0; index <= redacting.length; index++) {
       delete redacting[index]
     }
-    console.log(redacting)
   }
   // alt+e Позовляет редактировать текст изменив тип блока .
   else if (event.altKey == true && event.which == 69) {
@@ -104,25 +94,56 @@ function redacting_marked_text(event) {
     text.value = ''
     redacting[0].className = textmodes.value
     for (let index = 0; index <= redacting.length; index++) {
-       delete redacting[index]
+      delete redacting[index]
     }
-    console.log(redacting)
   }
 }
 
+function sidebarChapters(event) {
+  if (event.altKey && event.which == 67) {
+    const chaptersList = textfield.querySelectorAll('div.Chapter')
+    console.log(chaptersList)
+  }
+}
 
+function safeprogress() {
+  localStorage.setItem('nametext', textfield.innerHTML)
+}
+function loadprogress(event) {
+  // alt + s загрузка сохраненного текста 
+  if (event.altKey && event.which == 83){
+    textfield.innerHTML = localStorage.nametext
+  }
+  // alt + d удаление сохраненного текста 
+  else if (event.altKey && event.which == 68) {
+    event.preventDefault()
+    localStorage.clear()
+  }
+}
 
-
-
-Enter.addEventListener("click", wrtext)
+// футкция которая вызывает контекстное меню.
+function RMBcontextmenu(event) {
+  if (event.altKey == true && event.which == 3) {
+    event.preventDefault()
+    contextmenu.style.display = 'block' 
+    contextmenu.style.top = event.offsetY + 'px'
+    contextmenu.style.left = event.offsetX + 'px'
+  }
+}
+Enter.addEventListener("click", writeAndSafe)
+window.addEventListener('keydown', ModeOfText)
 window.addEventListener('keydown', Send_Enter_Button)
 window.addEventListener('change', Delete_button)
 window.addEventListener('change', edit_writed_text)
-
-window.addEventListener('keydown', ModeOfText)
 window.addEventListener('keydown', redacting_marked_text)
+window.addEventListener('change', safeprogress)
+window.addEventListener('keydown', loadprogress)
+window.addEventListener('mousedown', RMBcontextmenu)
 
 // Просто удобный способ узнать код нажатой клавиши. 
-window.addEventListener('keydown', (event) => {
-  console.log(event.key, event.which, event.altKey)
+// window.addEventListener('keydown', (event) => {
+//   console.log(event.key, event.which, event.altKey)
+// })
+window.addEventListener('mousedown', (event) => {
+  console.log( event.which, event.altKey)
 })
