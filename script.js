@@ -3,6 +3,7 @@ const textfield = document.getElementById('textfield')
 const textmodes = document.getElementById("textmodes")
 const sidebar = document.getElementById('sidebar')
 const contextmenu = document.getElementById('contextmenu')
+const forprint = document.getElementById('forprint')
 let text = document.getElementById('text'), clicked_classname
 
 
@@ -47,6 +48,7 @@ function Delete_button(event) {
   if (event.altKey == true && event.which == 8) {
     textfield.lastChild.remove()
   }
+  safeprogress()
 }
 // Простая функция по переключению режимов ввода текста при зажатой клавише альт и 1-4
 function ModeOfText(event) {
@@ -69,10 +71,12 @@ function ModeOfText(event) {
 function edit_writed_text() {
   const texfield_inners = document.querySelectorAll('#textfield > div')
   texfield_inners.forEach(element => {
-    element.addEventListener('click', () => {
-      clicked_classname = element.className
-      text.value = element.textContent
-      element.className = 'redacting'
+    element.addEventListener('click', (event) => {
+      if (event.altKey == true) {
+        clicked_classname = element.className
+        text.value = element.textContent
+        element.className = 'redacting'
+      }
     })
   });
 }
@@ -100,9 +104,15 @@ function redacting_marked_text(event) {
 }
 
 function sidebarChapters(event) {
-  if (event.altKey && event.which == 67) {
-    const chaptersList = textfield.querySelectorAll('div.Chapter')
-    console.log(chaptersList)
+  const chaptersList = document.querySelectorAll('#textfield >  div.chapter')
+  // if (event.altKey && event.which == 67) {
+  //   console.log(chaptersList)
+  // }
+  for (let index = 0; index < chaptersList.length; index++) {
+    const element = chaptersList[index];
+    let sidebarchapter = document.createElement('p')
+    sidebarchapter.textContent = element.textContent
+    sidebar.appendChild(sidebarchapter)
   }
 }
 
@@ -111,7 +121,7 @@ function safeprogress() {
 }
 function loadprogress(event) {
   // alt + s загрузка сохраненного текста 
-  if (event.altKey && event.which == 83){
+  if (event.altKey && event.which == 83) {
     textfield.innerHTML = localStorage.nametext
   }
   // alt + d удаление сохраненного текста 
@@ -120,16 +130,29 @@ function loadprogress(event) {
     localStorage.clear()
   }
 }
+//Не работает. А надо. 
+function DeleteThisText() {
+  const texfield_inners = document.querySelectorAll('#textfield > div')
+  texfield_inners.forEach(element => {
+    element.addEventListener('click', (event) => {
+      console.log(texfield_inners)
+      if (event.ctrlkey == true) {
+        console.log(element.textContent)
 
-// футкция которая вызывает контекстное меню.
-function RMBcontextmenu(event) {
-  if (event.altKey == true && event.which == 3) {
+      }
+    })
+  });
+}
+// Не нужно. Так как есть стандартное клавиатурное сокращение.
+// Хотя можно создать отдельную функциональную кнопку в интерфейсе. Это для тех кто не знает о стандартном клавиатурном сокразении.
+function PrintWritedText(event) {
+  if (event.altKey == true && event.which == 65) {
+    forprint.innerHTML = textfield.innerHTML
+    window.print()
     event.preventDefault()
-    contextmenu.style.display = 'block' 
-    contextmenu.style.top = event.offsetY + 'px'
-    contextmenu.style.left = event.offsetX + 'px'
   }
 }
+
 Enter.addEventListener("click", writeAndSafe)
 window.addEventListener('keydown', ModeOfText)
 window.addEventListener('keydown', Send_Enter_Button)
@@ -138,12 +161,14 @@ window.addEventListener('change', edit_writed_text)
 window.addEventListener('keydown', redacting_marked_text)
 window.addEventListener('change', safeprogress)
 window.addEventListener('keydown', loadprogress)
-window.addEventListener('mousedown', RMBcontextmenu)
-
+window.addEventListener('change', DeleteThisText)
+window.addEventListener('keydown', PrintWritedText)
+window.addEventListener('change', sidebarChapters)
 // Просто удобный способ узнать код нажатой клавиши. 
-// window.addEventListener('keydown', (event) => {
-//   console.log(event.key, event.which, event.altKey)
-// })
-window.addEventListener('mousedown', (event) => {
-  console.log( event.which, event.altKey)
+window.addEventListener('keydown', (event) => {
+  console.log(event.key, event.which, event.altKey)
 })
+// window.addEventListener('mousedown', (event) => {
+//   console.log( event.which, event.altKey , event.ctrlKey)
+// })
+// 
