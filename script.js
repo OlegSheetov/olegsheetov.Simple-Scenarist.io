@@ -7,6 +7,15 @@ const forprint = document.getElementById('forprint')
 let text = document.getElementById('text'), clicked_classname
 
 
+
+const Delete = document.getElementById('delete')
+const edit1 = document.getElementById('edit1')
+const edit2 = document.getElementById('edit2')
+const load = document.getElementById('load')
+const print = document.getElementById('print')
+const Delete2 = document.getElementById('delete2')
+const save = document.getElementById('save')
+
 function wrtext() {
   let writedtext_styleclass = textmodes.value, writedtext_name = text.value.replace(' ', '')
 
@@ -102,7 +111,7 @@ function redacting_marked_text(event) {
     }
   }
 }
-
+//Пока не работает. По задумне это содержание в правом блоке страницы. 
 function sidebarChapters(event) {
   const chaptersList = document.querySelectorAll('#textfield >  div.chapter')
   // if (event.altKey && event.which == 67) {
@@ -144,7 +153,7 @@ function DeleteThisText() {
   });
 }
 // Не нужно. Так как есть стандартное клавиатурное сокращение.
-// Хотя можно создать отдельную функциональную кнопку в интерфейсе. Это для тех кто не знает о стандартном клавиатурном сокразении.
+// Хотя можно создать отдельную функциональную кнопку в интерфейсе. Это для тех кто не знает о стандартном клавиатурном сокращении.
 function PrintWritedText(event) {
   if (event.altKey == true && event.which == 65) {
     forprint.innerHTML = textfield.innerHTML
@@ -164,10 +173,47 @@ window.addEventListener('keydown', loadprogress)
 window.addEventListener('change', DeleteThisText)
 window.addEventListener('keydown', PrintWritedText)
 window.addEventListener('change', sidebarChapters)
-// Просто удобный способ узнать код нажатой клавиши. 
-window.addEventListener('keydown', (event) => {
-  console.log(event.key, event.which, event.altKey)
+
+Delete.addEventListener('click', () => {
+  textfield.lastChild.remove()
+  safeprogress()
 })
+edit1.addEventListener('click', () => {
+  const redacting = textfield.querySelectorAll('div.redacting')
+  redacting[0].textContent = text.value
+  text.value = ''
+  redacting[0].className = clicked_classname
+  for (let index = 0; index <= redacting.length; index++) {
+    delete redacting[index]
+  }
+})
+edit2.addEventListener('click', () => {
+  const redacting = textfield.querySelectorAll('div.redacting')
+  redacting[0].textContent = text.value
+  text.value = ''
+  redacting[0].className = textmodes.value
+  for (let index = 0; index <= redacting.length; index++) {
+    delete redacting[index]
+  }
+
+})
+
+save.addEventListener('click', safeprogress)
+load.addEventListener('click', () => {
+  textfield.innerHTML = localStorage.nametext
+})
+Delete2.addEventListener('click', () => {
+  localStorage.clear()
+})
+
+print.addEventListener('click',()=> {
+  forprint.innerHTML = textfield.innerHTML
+    window.print()
+})
+// Просто удобный способ узнать код нажатой клавиши.
+// window.addEventListener('keydown', (event) => {
+//   console.log(event.key, event.which, event.altKey)
+// })
 // window.addEventListener('mousedown', (event) => {
 //   console.log( event.which, event.altKey , event.ctrlKey)
 // })
